@@ -7,7 +7,17 @@ app.use(express.json())
 
 const projects = []
 
-app.get('/projects', (req, res) => {
+function logRoutes(req, res, next) {
+  const { method, url } = req
+  const route = `[${method.toUpperCase()}] ${url}`
+  console.log(route)
+  return next()
+}
+
+// Middleware in all routes
+// app.use(logRoutes)
+
+app.get('/projects', logRoutes, (req, res) => {
   const { title } = req.query
   const results = title ? projects.filter(project => project.title.includes(title)) : projects
   return res.json(results)
@@ -53,7 +63,7 @@ app.delete('/projects/:id', (req, res) => {
   }
   
   projects.splice(projectIndex, 1)
-  
+
   return res.status(204).json([])
 })
 
