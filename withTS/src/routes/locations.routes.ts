@@ -118,7 +118,7 @@ locationsRouter.post('/', celebrate({
 locationsRouter.put('/:id', upload.single('image'), async (request, response) => {
   const { id } = request.params;
 
-  const image = request.file.filename;
+  const image = request.file?.filename;
 
   const location = await knex('locations').where('id', id).first();
 
